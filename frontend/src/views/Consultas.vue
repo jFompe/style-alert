@@ -79,7 +79,6 @@ export default {
   },
   methods: {
     showCreateConsulta() {
-      console.log(ConsultaModel);
       this.$store.dispatch('SET_CURRENT_CONSULTA', { ...ConsultaModel })
       this.$store.dispatch('HIDE_SHOW_CREATE_CONSULTA', true)
     }
