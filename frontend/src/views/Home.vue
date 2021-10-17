@@ -11,5 +11,10 @@
     components: {
       HelloWorld,
     },
+
+    created() {
+      // Ir directamente a la pantalla de consultas
+      this.$router.push('consultas')
+    }
   }
 </script>

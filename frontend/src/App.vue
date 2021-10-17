@@ -2,43 +2,43 @@
   <v-app>
     <v-app-bar
       app
+      clipped-left
       color="primary"
       dark
     >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
-
-      <v-spacer></v-spacer>
-
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
+      <v-app-bar-nav-icon @click="showDrawer = !showDrawer"></v-app-bar-nav-icon>
+      <v-toolbar-title>Style Alert</v-toolbar-title>
     </v-app-bar>
 
+    <v-navigation-drawer
+      v-model="showDrawer"
+      app
+      clipped
+    >
+      <v-list
+        nav
+        dense
+      >
+        <v-list-item
+          v-for="option in menuOptions"
+          :key="option.name"
+          link
+          :to="option.route"
+        >
+          <v-list-item-icon>
+            <v-icon>{{ option.icon }}</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title>{{ option.name }}</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+
     <v-main>
-      <router-view/>
+      <v-container 
+        fluid
+      >
+        <router-view/>
+      </v-container>
     </v-main>
   </v-app>
 </template>
@@ -49,7 +49,26 @@ export default {
   name: 'App',
 
   data: () => ({
-    //
+    showDrawer: false,
+
+    menuOptions: [
+      { name: 'Home', icon: 'mdi-home', route: '/' },
+      { name: 'Consultas', icon: 'mdi-magnify', route: '/consultas' },
+      { name: 'Cuenta', icon: 'mdi-account', route: '/account' }
+    ]
   }),
+
+  created() {
+
+  },
+  mounted() {
+
+  },
+  computed: {
+
+  },
+  methods: {
+
+  }
 };
 </script>
