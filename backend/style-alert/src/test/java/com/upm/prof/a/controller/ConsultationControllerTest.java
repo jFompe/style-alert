@@ -33,8 +33,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(ConsultationController.class)
@@ -45,14 +44,8 @@ public class ConsultationControllerTest {
     @InjectMocks
     ConsultationController consultationController;
 
-    @Mock
+    @MockBean
     ConsultationService consultationService;
-
-    @Mock
-    UserRepo userRepo;
-
-    @Mock
-    ConsultationRepo consultationRepo;
 
     @Test
     public void getConsultations() throws Exception {
@@ -62,14 +55,13 @@ public class ConsultationControllerTest {
         consultation.setName("prueba"); consultation.setUrl("www.prueba.com");consultation.setRegistrationTime(new Date());
         consultations.add(consultation);
 
-        Mockito.when(userRepo.findById(1L)).thenReturn(Optional.of(usuario));
-        Mockito.when(consultationRepo.findByUserId(1L)).thenReturn(consultations);
         Mockito.when(consultationService.getConsultation(1L)).thenReturn(consultations);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/consultation/1")
-                .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/consultation/{user_id}",1L))
                 .andExpect(status().isOk())
-                .andExpect((ResultMatcher) jsonPath("$[2].name", is("prueba")));
+                .andExpect(content().contentType("application/json"))
+                .andExpect(jsonPath("$[0].url").value(consultation.getUrl()))
+                .andExpect(jsonPath("$[0].name").value(consultation.getName()));
     }
 
 }

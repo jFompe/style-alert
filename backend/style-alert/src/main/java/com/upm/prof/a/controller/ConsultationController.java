@@ -23,8 +23,8 @@ public class ConsultationController {
     private ConsultationService consultationService;
 
     @GetMapping(path="/{user_id}", produces = "application/json")
-	public List<Consultation> getConsultations(@PathVariable(name = "id") Long id) throws NotFoundException {
-		return consultationService.getConsultation(id);
+	public List<Consultation> getConsultations(@PathVariable(name = "user_id") Long userId) throws NotFoundException {
+		return consultationService.getConsultation(userId);
 	}
 
 }
