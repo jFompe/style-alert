@@ -22,12 +22,12 @@ public class ConsultationService {
     @Autowired
     private UserRepo userRepo;
 
-    public ResponseEntity<List<Consultation>> getConsultation(Long id) throws NotFoundException {
+    public List<Consultation> getConsultation(Long id) throws NotFoundException {
         User currentUser = userRepo.findById(id).orElseThrow(() -> 
             new NotFoundException());
-		List<Consultation> consultations = consultationRepo.findByUser(currentUser);
+		List<Consultation> consultations = consultationRepo.findByUserId(id);
                  
-		return new ResponseEntity<>(consultations, HttpStatus.OK);
+		return consultations;
 	}
     
 }

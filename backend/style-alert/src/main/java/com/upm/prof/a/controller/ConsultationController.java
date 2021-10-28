@@ -22,8 +22,8 @@ public class ConsultationController {
     @Autowired
     private ConsultationService consultationService;
 
-    @GetMapping("/{user_id}")
-	public ResponseEntity<List<Consultation>> getConsultations(@PathVariable(name = "id") Long id) throws NotFoundException {
+    @GetMapping(path="/{user_id}", produces = "application/json")
+	public List<Consultation> getConsultations(@PathVariable(name = "id") Long id) throws NotFoundException {
 		return consultationService.getConsultation(id);
 	}
 
