@@ -22,10 +22,12 @@ Para poder ejecutar el proyecto es necesario:
    
 3. Ejecutar "scriptQueFacilitaLaVida.sh". Mientras no haya script ejecutar los comandos de abajo:
 
-``` mvn clean install -U
+``` 
+    mvn clean install -U
 ```
 Si no tienes instalado el maven en terminal, puedes usar los atajos de IntelliJ, pero recomiendo descargarlo.
-``` java -jar target/style-alert-1.0-SNAPSHOT.jar
+``` 
+    java -jar target/style-alert-1.0-SNAPSHOT.jar
 ```
 
 ## Front-end
