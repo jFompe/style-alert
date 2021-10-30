@@ -29,5 +29,13 @@ public class ConsultationService {
                  
 		return consultations;
 	}
+
+	public Consultation postConsultation (Long id, Consultation consultation) throws NotFoundException {
+        User currentUser = userRepo.findById(id).orElseThrow(() ->
+                new NotFoundException());
+        consultation.setUser(currentUser);
+        consultationRepo.save(consultation);
+        return consultation;
+    }
     
 }
