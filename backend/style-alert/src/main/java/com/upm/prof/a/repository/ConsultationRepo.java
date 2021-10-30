@@ -12,6 +12,6 @@ public interface ConsultationRepo extends JpaRepository<Consultation, Long>{
     
     public Optional<Consultation> findById(Long id);
 
-    public List<Consultation> findByUser(User user);
+    public List<Consultation> findByUserId(Long userId);
 
 }

@@ -1,5 +1,7 @@
 package com.upm.prof.a.persistence;
 
+import com.sun.istack.NotNull;
+
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -26,8 +28,12 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    @NotNull
     @Column(name = "email")
     private String email;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Consultation> consultations;
 
     public long getId(){
         return id;
@@ -60,9 +66,6 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    @OneToMany(mappedBy = "university", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Consultation> consultations;
 
     public List<Consultation> getConsultations() {
         return consultations;
