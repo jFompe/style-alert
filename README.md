@@ -10,7 +10,7 @@ Esto instala también el gestor de paquetes `npm`
 
 Con esto desde la terminal se puede abrir una interfaz gráfica usando `vue ui`. Desde esta se pueden crear e importar proyectos, manejar sus dependencias, ejecutar y buildearlos, etc.
 
-Para trabajar con el proyecto, tras hacer el clone hay que colocarse en `/style-alert/frontend` y hacer `npm install` para instalar todas las dependencias. (Estas están en el archivo `package.json`).
+Para trabajar con el proyecto, tras hacer el clone hay que hacer `npm install` para instalar todas las dependencias. (Estas están en el archivo `package.json`, hay que asegurarse de estar en el directorio que contiene este archivo).
 
 Para ejecutar el programa se usa el comando `npm run serve`. Con esto se puede abrir la web generada por el proyecto en `localhost:8080`.
 
