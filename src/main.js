@@ -3,8 +3,13 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
+import { loadComponent } from './utils/dynamic-loader'
 
 Vue.config.productionTip = false
+
+const Spinner = loadComponent('Spinner')
+
+Vue.component(Spinner)
 
 new Vue({
   router,
