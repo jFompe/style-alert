@@ -11,11 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
+
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,6 +21,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
+@RunWith(MockitoJUnitRunner.class)
 public class ConsultationServiceTest {
 
     @InjectMocks
@@ -37,7 +34,7 @@ public class ConsultationServiceTest {
     ConsultationRepo consultationRepo;
 
     @Test
-    public void getConsultations() throws Exception {
+    public void whenUserExists_getConsultations_ReturnsSuccess() throws Exception {
         //Creacion de los datos para las pruebas
         Consultation consultation = new Consultation();
         consultation.setName("prueba"); consultation.setUrl("www.prueba.com");consultation.setRegistrationTime(new Date());
@@ -61,5 +58,13 @@ public class ConsultationServiceTest {
         assertEquals(consultations.get(0).getUrl(), result.get(0).getUrl());
 
     }
+
+    //@Test
+    //public void whenUserNotExist_getConsultations_ThrowsException() throws Exception {
+    //    Mockito.when(userRepo.findById(1L)).thenThrow(ClassNotFoundException.class);
+    //    consultationService.getConsultation(1l);
+
+    //}
+
 
 }
