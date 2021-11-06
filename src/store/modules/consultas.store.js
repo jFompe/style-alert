@@ -1,3 +1,5 @@
+import { MAKE_REQUEST } from '../../requests/requests'
+import { REQ_CONSULTATION } from '../../requests/endpoints'
 
 const state = {
   consultas: [],
@@ -13,7 +15,7 @@ const getters = {
 }
 
 const actions = {
-  async FETCH_CONSULTAS({ commit }) {
+  async FETCH_CONSULTAS({ commit, rootGetters }) {
     const consultas = [
       { id: 1, userId: 1, name: 'Google', url: 'google.com', date: '11/10/2021' },
       { id: 2, userId: 1, name: 'Twitter', url: 'twitter.com', date: '11/09/2021' },
@@ -31,6 +33,8 @@ const actions = {
       { id: 14, userId: 5, name: 'Google', url: 'google.com', date: '11/10/2021' },
       { id: 15, userId: 5, name: 'Google', url: 'google.com', date: '11/10/2021' },
     ]
+
+    // const consultas2 = await MAKE_REQUEST('GET', rootGetters.getUser.getId)
 
     commit('_setConsultas', consultas)
   },
