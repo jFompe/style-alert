@@ -47,6 +47,11 @@ const actions = {
   UPDATE_CURRENT_CONSULTA({ commit }, { key, value }) {
     commit('_updateCurrentConsulta', { key, value })
   },
+  async DELETE_CONSULTA({ commit }, idConsulta) {
+    commit('_deleteConsulta', idConsulta)
+    
+    // TODO Mandar borrado al back
+  },
   async SAVE_CONSULTA({ commit, getters }) {
     const op = getters.getIsEditingConsulta ? '_editConsulta' : '_addConsulta'
     commit(op, getters.getCurrentConsulta)
@@ -67,6 +72,9 @@ const mutations = {
   _editConsulta(state, payload) {
     const index = state.consultas.findIndex(c => c.id == payload.id)
     Vue.set(state.consultas, index, payload)
+  },
+  _deleteConsulta(state, payload) {
+    state.consultas = state.consultas.filter(c => c.id != payload)
   },
   _setCurrentConsulta(state, payload) {
     state.currentConsulta = payload

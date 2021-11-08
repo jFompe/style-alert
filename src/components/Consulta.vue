@@ -14,7 +14,7 @@
         <v-btn icon @click="showCreateConsulta">
           <v-icon >mdi-pencil</v-icon>
         </v-btn>
-        <v-btn icon>
+        <v-btn icon @click="deleteConsulta(consulta.id)">
           <v-icon>mdi-delete</v-icon>
         </v-btn>
       </v-row>
@@ -53,6 +53,12 @@ export default {
       this.$store.dispatch('HIDE_SHOW_CREATE_CONSULTA', { 
         doShow: true, isEditing: true 
       })
+    },
+    deleteConsulta(id) {
+      if (!window.confirm(`Estás seguro de que deseas borrar la consulta:\n${this.consulta.name}`)) 
+        return
+
+      this.$store.dispatch('DELETE_CONSULTA', id)
     },
   }
 }
