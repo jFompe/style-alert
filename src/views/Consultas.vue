@@ -93,7 +93,9 @@ export default {
   methods: {
     showCreateConsulta() {
       this.$store.dispatch('SET_CURRENT_CONSULTA', { ...ConsultaModel })
-      this.$store.dispatch('HIDE_SHOW_CREATE_CONSULTA', true)
+      this.$store.dispatch('HIDE_SHOW_CREATE_CONSULTA', { 
+        doShow: true, isEditing: false 
+      })
     },
     async refresh() {
       this.$store.dispatch('SET_LOADING', true)

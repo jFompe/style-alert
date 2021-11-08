@@ -4,7 +4,7 @@
     width=500px
   >
     <v-card>
-      <v-card-title>Crear Consulta</v-card-title>
+      <v-card-title>{{isEditing ? 'Editar' : 'Crear'}} Consulta</v-card-title>
       <v-card-text>
         <v-text-field
           label="Nombre de la consulta"
@@ -48,15 +48,20 @@ export default {
   computed: {
     showCreateConsulta: {
       set() {
-        this.$store.dispatch('HIDE_SHOW_CREATE_CONSULTA', false)
+        this.$store.dispatch('HIDE_SHOW_CREATE_CONSULTA', { 
+          doShow: false, isEditing: null 
+        })
       },
       get() {
         return this.$store.getters.getShowCreateConsulta
       }
     },
+    isEditing() {
+      return this.$store.getters.getIsEditingConsulta
+    },
     currentConsulta() {
       return this.$store.getters.getCurrentConsulta
-    }
+    },
   },
   methods: {
     async closeCreateConsulta(save = false) {
