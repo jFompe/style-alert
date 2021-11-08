@@ -44,6 +44,11 @@ const actions = {
   UPDATE_CURRENT_CONSULTA({ commit }, { key, value }) {
     commit('_updateCurrentConsulta', { key, value })
   },
+  async DELETE_CONSULTA({ commit }, idConsulta) {
+    commit('_deleteConsulta', idConsulta)
+    
+    // TODO Mandar borrado al back
+  },
   async SAVE_CONSULTA({ commit, getters }) {
     commit('_addConsulta', getters.getCurrentConsulta)
   },
@@ -58,6 +63,9 @@ const mutations = {
   },
   _addConsulta(state, payload = {}) {
     state.consultas.push(payload)
+  },
+  _deleteConsulta(state, payload) {
+    state.consultas = state.consultas.filter(c => c.id != payload)
   },
   _setCurrentConsulta(state, payload) {
     state.currentConsulta = payload
