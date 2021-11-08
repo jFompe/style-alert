@@ -18,7 +18,7 @@ const actions = {
       dispatch('FETCH_USER')
     ])
   },
-  FETCH_USER({ commit }, { username, password }) {
+  async FETCH_USER({ commit }, { username, password }) {
     const user = await MAKE_REQUEST('POST', REQ_LOGIN(), {
       user: username,
       pass: sha256(password)
