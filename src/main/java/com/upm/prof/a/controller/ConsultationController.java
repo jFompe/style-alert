@@ -32,4 +32,6 @@ public class ConsultationController {
         return consultationService.postConsultation(userId, consultation);
     }
 
+
+
 }
