@@ -14,7 +14,7 @@
         <v-btn icon>
           <v-icon>mdi-pencil</v-icon>
         </v-btn>
-        <v-btn icon>
+        <v-btn icon @click="deleteConsulta(consulta.id)">
           <v-icon>mdi-delete</v-icon>
         </v-btn>
       </v-row>
@@ -47,7 +47,13 @@ export default {
   methods: {
     linkToUrl(url) {
       window.open('http://' + url, '_blank', null, true)
-    }
+    },
+    deleteConsulta(id) {
+      if (!window.confirm(`Estás seguro de que deseas borrar la consulta:\n${this.consulta.name}`)) 
+        return
+
+      this.$store.dispatch('DELETE_CONSULTA', id)
+    },
   }
 }
 </script>
