@@ -17,6 +17,7 @@
           outlined
           v-model="currentConsulta.url"
           @change="updateField('url', $event)"
+          :rules="[rules.url]"
         ></v-text-field>
       </v-card-text>
       <v-card-actions>
@@ -37,7 +38,12 @@ export default {
   name: 'CreateConsultaDialog',
 
   data: () => ({
-
+    rules: {
+      url: value => {
+        const pattern = /((https?:\/\/|^)(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/
+        return pattern.test(value)
+      }
+    }
   }),
   created() {
 
