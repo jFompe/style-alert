@@ -41,7 +41,15 @@ export default {
   },
   computed: {
     iconUrl() {
-      return 'http://' + this.consulta.url + '/favicon.ico'
+      let url = this.consulta.url
+      const httpPattern = /https?:\/\//
+      if (httpPattern.test(this.consulta.url)) {
+        url = url.substring(url.indexOf('//') + 2, url.length)
+      }
+      if (url.split('/').length - 1 > 1) {
+        url = url.substring(0, url.indexOf('/'))
+      }
+      return 'http://' + url + '/favicon.ico'
     }
   },
   methods: {
