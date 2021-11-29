@@ -31,7 +31,6 @@ public class ConsultationService {
     @Autowired
     private UserRepo userRepo;
 
-    private static final Gson gson = new Gson();
 
     public List<Consultation> getConsultation(Long id) throws NotFoundException, ParseException {
         User currentUser = userRepo.findById(id).orElseThrow(() -> 
@@ -39,6 +38,9 @@ public class ConsultationService {
 		List<Consultation> consultations = consultationRepo.findByUserId(id);
 		for (Consultation consultation: consultations){
 		    //System.out.println(this.getLastUpdate(consultation));
+            if(this.getLastUpdate(consultation)==null){
+                continue;
+            }
             Date updated = new SimpleDateFormat("YYYYMMDDhhmmss").parse(this.getLastUpdate(consultation));
             consultation.setUpdateTime(updated);
             consultationRepo.save(consultation);
@@ -53,7 +55,12 @@ public class ConsultationService {
 
         consultation.setUser(currentUser);
         consultation.setRegistrationTime(date);
-        Date updated = new SimpleDateFormat("YYYYMMDDhhmmss").parse(this.getLastUpdate(consultation));
+        Date updated;
+        if(this.getLastUpdate(consultation)== null){
+            updated = new Date(System.currentTimeMillis());
+        } else{
+            updated = new SimpleDateFormat("YYYYMMDDhhmmss").parse(this.getLastUpdate(consultation));
+        }
         consultation.setUpdateTime(updated);
         consultationRepo.save(consultation);
         return consultation;
@@ -64,7 +71,9 @@ public class ConsultationService {
         String llamadaAPI = "http://archive.org/wayback/available?url="+ url;
         RestTemplate llamada = new RestTemplate();
         ResponseEntity<Busqueda> responseEntity = llamada.getForEntity(llamadaAPI, Busqueda.class);
-        String resultado = responseEntity.getBody().getArchived_snapshots().getClosest().getTimestamp();
-        return resultado;
+        if(responseEntity.getBody().getArchived_snapshots() ==null){
+            return null;
+        }
+        return responseEntity.getBody().getArchived_snapshots().getClosest().getTimestamp();
     }
 }
