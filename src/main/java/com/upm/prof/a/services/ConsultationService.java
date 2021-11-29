@@ -1,20 +1,21 @@
 package com.upm.prof.a.services;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
 import com.google.gson.Gson;
 
+import com.upm.prof.a.pojo.Archived_snapshots;
 import com.upm.prof.a.persistence.Consultation;
 import com.upm.prof.a.persistence.User;
+import com.upm.prof.a.pojo.Busqueda;
 import com.upm.prof.a.repository.ConsultationRepo;
 import com.upm.prof.a.repository.UserRepo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -32,35 +33,39 @@ public class ConsultationService {
 
     private static final Gson gson = new Gson();
 
-    public List<Consultation> getConsultation(Long id) throws NotFoundException {
+    public List<Consultation> getConsultation(Long id) throws NotFoundException, ParseException {
         User currentUser = userRepo.findById(id).orElseThrow(() -> 
             new NotFoundException());
 		List<Consultation> consultations = consultationRepo.findByUserId(id);
 		for (Consultation consultation: consultations){
-            consultation.setUpdateTime(this.getLastUpdate(consultation));
+		    //System.out.println(this.getLastUpdate(consultation));
+            Date updated = new SimpleDateFormat("YYYYMMDDhhmmss").parse(this.getLastUpdate(consultation));
+            consultation.setUpdateTime(updated);
+            consultationRepo.save(consultation);
         }
 		return consultations;
 	}
 
-	public Consultation postConsultation (Long id, Consultation consultation) throws NotFoundException {
+	public Consultation postConsultation (Long id, Consultation consultation) throws NotFoundException, ParseException {
         User currentUser = userRepo.findById(id).orElseThrow(() ->
                 new NotFoundException());
         Date date = new Date();
 
         consultation.setUser(currentUser);
         consultation.setRegistrationTime(date);
-        consultation.setUpdateTime(this.getLastUpdate(consultation));
+        Date updated = new SimpleDateFormat("YYYYMMDDhhmmss").parse(this.getLastUpdate(consultation));
+        consultation.setUpdateTime(updated);
         consultationRepo.save(consultation);
         return consultation;
     }
 
-    private Date getLastUpdate (Consultation consultation){
+    private String getLastUpdate (Consultation consultation){
         String url = consultation.getUrl();
-        String llamadaAPI = " http://archive.org/wayback/available?"+ url;
+        String llamadaAPI = "http://archive.org/wayback/available?url="+ url;
         RestTemplate llamada = new RestTemplate();
-        ResponseEntity responseEntity = llamada.getForEntity(llamadaAPI,ResponseEntity.class);
-        String resultado = gson.toJson(responseEntity.getBody());
-
-        return null;
+        ResponseEntity<Busqueda> responseEntity = llamada.getForEntity(llamadaAPI, Busqueda.class);
+        String resultado = responseEntity.getBody().getArchived_snapshots().getClosest().getTimestamp();
+        System.err.println(responseEntity.getBody());
+        return resultado;
     }
 }

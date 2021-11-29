@@ -5,14 +5,17 @@ import com.upm.prof.a.persistence.Consultation;
 import com.upm.prof.a.persistence.User;
 import com.upm.prof.a.repository.ConsultationRepo;
 import com.upm.prof.a.repository.UserRepo;
+import javassist.NotFoundException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.data.crossstore.ChangeSetPersister;
 
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -65,6 +68,27 @@ public class ConsultationServiceTest {
     //    consultationService.getConsultation(1l);
 
     //}
+
+    @Test
+    public void whenUserExists_postConsultations_ReturnSuccess() throws ChangeSetPersister.NotFoundException, ParseException {
+        User usuario = new User();
+        usuario.setId(1L);
+        usuario.setEmail("prueba@gmail.com");
+
+        Consultation expected = new Consultation();
+        expected.setUrl("www.prueba.com");
+        expected.setName("prueba");
+
+        //Mockear los repos
+        Mockito.when(userRepo.findById(1L)).thenReturn(Optional.of(usuario));
+
+        Consultation result = consultationService.postConsultation(1L, expected);
+        assertEquals(usuario.getEmail(), result.getUser().getEmail());
+        assertEquals(usuario.getId(), result.getUser().getId());
+        assertEquals(expected.getUrl(), result.getUrl());
+        assertEquals(expected.getName(), result.getName());
+
+    }
 
 
 }
