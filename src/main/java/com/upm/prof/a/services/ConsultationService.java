@@ -65,7 +65,6 @@ public class ConsultationService {
         RestTemplate llamada = new RestTemplate();
         ResponseEntity<Busqueda> responseEntity = llamada.getForEntity(llamadaAPI, Busqueda.class);
         String resultado = responseEntity.getBody().getArchived_snapshots().getClosest().getTimestamp();
-        System.err.println(responseEntity.getBody());
         return resultado;
     }
 }
