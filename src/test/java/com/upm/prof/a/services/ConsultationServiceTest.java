@@ -17,6 +17,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.data.crossstore.ChangeSetPersister;
 
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -73,7 +74,7 @@ public class ConsultationServiceTest {
     //}
 
     @Test
-    public void whenUserExists_postConsultations_ReturnSuccess() throws ChangeSetPersister.NotFoundException {
+    public void whenUserExists_postConsultations_ReturnSuccess() throws ChangeSetPersister.NotFoundException, ParseException {
         User usuario = new User();
         usuario.setId(1L);
         usuario.setEmail("prueba@gmail.com");
@@ -88,7 +89,7 @@ public class ConsultationServiceTest {
         Consultation result = consultationService.postConsultation(1L, expected);
         assertEquals(usuario.getEmail(), result.getUser().getEmail());
         assertEquals(usuario.getId(), result.getUser().getId());
-
+        assertEquals(expected.getUrl(), result.getUrl());
+        assertEquals(expected.getName(), result.getName());
     }
-
 }

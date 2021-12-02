@@ -2,6 +2,7 @@ package com.upm.prof.a.controller;
 
 import lombok.Data;
 
+import java.text.ParseException;
 import java.util.List;
 
 import com.upm.prof.a.persistence.Consultation;
@@ -22,13 +23,13 @@ public class ConsultationController {
     private ConsultationService consultationService;
 
     @GetMapping(path="/{user_id}", produces = "application/json")
-	public List<Consultation> getConsultations(@PathVariable(name = "user_id") Long userId) throws NotFoundException {
+	public List<Consultation> getConsultations(@PathVariable(name = "user_id") Long userId) throws NotFoundException, ParseException {
 		return consultationService.getConsultation(userId);
 	}
 
 	@PostMapping(path = "/{user_id}", consumes = "application/json", produces = "application/json")
     public Consultation postConsultation(@PathVariable(name = "user_id") Long userId,
-            @Validated @RequestBody Consultation consultation) throws NotFoundException {
+            @Validated @RequestBody Consultation consultation) throws NotFoundException, ParseException {
         return consultationService.postConsultation(userId, consultation);
     }
 

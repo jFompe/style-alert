@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -23,6 +24,8 @@ public class Consultation {
     private Long id;
 
     @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name="user_id", nullable=false, updatable=false)
     private User user;
 
     @Column(name = "name")
