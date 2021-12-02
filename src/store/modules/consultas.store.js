@@ -1,8 +1,12 @@
+import { MAKE_REQUEST } from '../../requests/requests'
+import { REQ_CONSULTATION } from '../../requests/endpoints'
+import Vue from 'vue'
 
 const state = {
   consultas: [],
   currentConsulta: {},
   showCreateConsulta: false,
+  isEditingConsulta: false,
 }
 
 const getters = {
@@ -10,10 +14,11 @@ const getters = {
   getConsultasByUserId: state => id => state.consultas.filter(c => c.userId == id),
   getCurrentConsulta: state => state.currentConsulta,
   getShowCreateConsulta: state => state.showCreateConsulta,
+  getIsEditingConsulta: state => state.isEditingConsulta,
 }
 
 const actions = {
-  async FETCH_CONSULTAS({ commit }) {
+  async FETCH_CONSULTAS({ commit, rootGetters }) {
     const consultas = [
       { id: 1, userId: 1, name: 'Google', url: 'google.com', date: '11/10/2021' },
       { id: 2, userId: 1, name: 'Twitter', url: 'twitter.com', date: '11/09/2021' },
@@ -32,6 +37,8 @@ const actions = {
       { id: 15, userId: 5, name: 'Google', url: 'google.com', date: '11/10/2021' },
     ]
 
+    // const consultas2 = await MAKE_REQUEST('GET', rootGetters.getUser.getId)
+
     commit('_setConsultas', consultas)
   },
   SET_CURRENT_CONSULTA({ commit }, current) {
@@ -40,11 +47,18 @@ const actions = {
   UPDATE_CURRENT_CONSULTA({ commit }, { key, value }) {
     commit('_updateCurrentConsulta', { key, value })
   },
-  async SAVE_CONSULTA({ commit, getters }) {
-    commit('_addConsulta', getters.getCurrentConsulta)
+  async DELETE_CONSULTA({ commit }, idConsulta) {
+    commit('_deleteConsulta', idConsulta)
+    
+    // TODO Mandar borrado al back
   },
-  HIDE_SHOW_CREATE_CONSULTA({ commit }, doShow) {
+  async SAVE_CONSULTA({ commit, getters }) {
+    const op = getters.getIsEditingConsulta ? '_editConsulta' : '_addConsulta'
+    commit(op, getters.getCurrentConsulta)
+  },
+  HIDE_SHOW_CREATE_CONSULTA({ commit }, { doShow, isEditing }) {
     commit('_setShowCreateConsulta', doShow)
+    if (isEditing != null) commit('_setIsEditingConsulta', isEditing)
   },
 }
 
@@ -55,6 +69,13 @@ const mutations = {
   _addConsulta(state, payload = {}) {
     state.consultas.push(payload)
   },
+  _editConsulta(state, payload) {
+    const index = state.consultas.findIndex(c => c.id == payload.id)
+    Vue.set(state.consultas, index, payload)
+  },
+  _deleteConsulta(state, payload) {
+    state.consultas = state.consultas.filter(c => c.id != payload)
+  },
   _setCurrentConsulta(state, payload) {
     state.currentConsulta = payload
   },
@@ -64,6 +85,9 @@ const mutations = {
   _setShowCreateConsulta(state, payload) {
     state.showCreateConsulta = payload
   },
+  _setIsEditingConsulta(state, payload) {
+    state.isEditingConsulta = payload
+  }
 }
 
 

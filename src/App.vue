@@ -1,5 +1,8 @@
 <template>
   <v-app>
+
+    <Spinner />
+
     <v-app-bar
       app
       clipped-left
@@ -44,8 +47,10 @@
 </template>
 
 <script>
+import Spinner from './components/Spinner.vue';
 
 export default {
+  components: { Spinner },
   name: 'App',
 
   data: () => ({

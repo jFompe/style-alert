@@ -15,3 +15,7 @@ Para trabajar con el proyecto, tras hacer el clone hay que hacer `npm install` p
 Para ejecutar el programa se usa el comando `npm run serve`. Con esto se puede abrir la web generada por el proyecto en `localhost:8080`.
 
 Para buildear el proyecto, el comando es `npm run build`. La build se genera en el directorio `/dist`
+
+Acceso a la aplicación web:
+http://54.173.187.126/#/consultas
+(La máquina AWS debe estar activada)

@@ -5,7 +5,20 @@
       <v-card-title>
         <span>Mis Consultas</span>
         <v-spacer></v-spacer>
-        
+        <v-tooltip top>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn 
+              icon 
+              x-large
+              v-bind="attrs"
+              v-on="on"
+              @click="refresh()"
+            >
+              <v-icon>mdi-refresh</v-icon>
+            </v-btn>
+          </template>
+          <span>Recargar</span>
+        </v-tooltip>
         <v-tooltip top>
           <template v-slot:activator="{ on, attrs }">
             <v-btn 
@@ -80,8 +93,15 @@ export default {
   methods: {
     showCreateConsulta() {
       this.$store.dispatch('SET_CURRENT_CONSULTA', { ...ConsultaModel })
-      this.$store.dispatch('HIDE_SHOW_CREATE_CONSULTA', true)
-    }
+      this.$store.dispatch('HIDE_SHOW_CREATE_CONSULTA', { 
+        doShow: true, isEditing: false 
+      })
+    },
+    async refresh() {
+      this.$store.dispatch('SET_LOADING', true)
+      await this.$store.dispatch('FETCH_CONSULTAS')
+      this.$store.dispatch('SET_LOADING', false)
+    },
   }
 }
 </script>
